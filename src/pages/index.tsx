@@ -5,10 +5,11 @@ import { useEffect } from 'react';
 
 import { DateTime } from 'luxon';
 
-import { EpgProps } from '~/@types/epg';
 import ScheduleItem from '~/components/ScheduleItem';
 import useLazyFetch from '~/hooks/useLazyFetch';
 import styles from '~/styles/schedule.module.scss';
+
+import { EpgProps } from '../@types/epg';
 
 export default function Home() {
 	const [{ data }, getData] = useLazyFetch<EpgProps>('/programmes/1337', {
