@@ -1,11 +1,16 @@
 
-import { useEffect } from 'react';
+
+
+import * as react from 'react';
 
 import { DateTime } from 'luxon';
 
 import { EpgProps } from '~/@types/epg';
 import { ScheduleItem } from '~/components/ScheduleItem';
 import useLazyFetch from '~/hooks/useLazyFetch';
+import styles from '~/styles/Schedule.module.scss';
+
+
 
 
 export default function Home() {
@@ -15,12 +20,12 @@ export default function Home() {
 		},
 	});
 
-	useEffect(() => {
+	react.useEffect(() => {
 		getData();
 	}, []);
 
 	return (
-		<section className="schedule-list">
+		<section className={styles.scheduleList}>
 			<h1>Programação</h1>
 
 			<ul>
