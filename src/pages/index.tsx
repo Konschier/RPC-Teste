@@ -1,25 +1,33 @@
-import { useEffect, useState } from 'react';
 
-import Head from 'next/head';
+import { useEffect } from 'react';
 
 import { DateTime } from 'luxon';
-import { stringify } from 'querystring';
 
-import useFetch from '~/hooks/useFetch';
+import { EpgProps } from '~/@types/epg';
+import { ScheduleItem } from '~/components/ScheduleItem';
+import useLazyFetch from '~/hooks/useLazyFetch';
+
 
 export default function Home() {
-	const [date, setDate] = useState(DateTime.now().toFormat('yyyy-MM-dd'));
-	const params = stringify({ date });
-	const { data, mutate } = useFetch(`/programmes/1337?${params}`);
+	const [{ data }, getData] = useLazyFetch<EpgProps>('/programmes/1337', {
+		params: {
+			date: DateTime.now().toFormat('yyyy-MM-dd')
+		},
+	});
 
-	console.log(data);
+	useEffect(() => {
+		getData();
+	}, []);
 
-  return (
-    <div>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-    </div>
-  );
+	return (
+		<section className="schedule-list">
+			<h1>Programação</h1>
+
+			<ul>
+				{data?.programme.entries.map((schedule) =>
+					<ScheduleItem key={schedule.title} schedule={schedule} />
+				)}
+			</ul>
+		</section>
+	);
 }

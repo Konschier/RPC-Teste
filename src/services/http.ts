@@ -1,22 +1,16 @@
-const request: RequestInit = {
-	headers: {
-		'content-type': 'application/json',
-	},
-	method: 'GET',
-};
+import axios, { AxiosRequestConfig } from 'axios';
 
-async function fetcher<T = any>(input: RequestInfo, config?: RequestInit) {
-	if (typeof input === 'string') {
-		input = `${process.env.NEXT_PUBLIC_API_URL}/${input}`;
-	}
-	const response = await fetch(input, { ...request, ...config });
+const http = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    'content-type': 'application/json',
+  },
+});
 
-	const data = await response.json();
+export async function fetcher<T = any>(url: string, config?: AxiosRequestConfig) {
+  const { data } = await http({ url, ...config });
 
-	console.log(response);
-
-	return data as T;
+  return data as T;
 }
 
-
-export default fetcher;
+export default http;
